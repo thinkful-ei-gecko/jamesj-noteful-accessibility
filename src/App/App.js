@@ -69,6 +69,7 @@ class App extends Component {
   updateNewNoteData = (input, value) => {
     this.setState({
       newNote: {
+          ...this.state.newNote,
         [input]: {
           touched: true,
           value: value,

@@ -4,20 +4,20 @@ import './AddNote.css'
 
 export default class AddNote extends React.Component {
   static contextType = ApiContext
-  addNewNote = (note) => {
+  addNewNote = note => {
     console.log(note)
     fetch('http://localhost:9090/notes', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(note)
+      body: JSON.stringify(note),
     })
-    .then(res => {
-      console.log(JSON.stringify(note))
-     return res.json()
-    })
-    .then(resJSON => this.context.handleAddNote(resJSON))
+      .then(res => {
+        console.log(JSON.stringify(note))
+        return res.json()
+      })
+      .then(resJSON => this.context.handleAddNote(resJSON))
   }
   parseFolders = () => {
     return this.context.folders.map(folder => (
@@ -27,26 +27,54 @@ export default class AddNote extends React.Component {
     ))
   }
 
-  handleFormSubmit = (e) => {
+  handleFormSubmit = e => {
     e.preventDefault(e)
     const newNote = {
       name: e.target.name.value,
       content: e.target.desc.value,
       folderId: e.target.folders.value,
-      modified: new Date()
+      modified: new Date(),
     }
     this.addNewNote(newNote)
   }
 
+  validateName = () => {
+    if(this.context.newNote.name === 0) {
+      console.log('nope son ya dun gooft')
+    }
+  }
+
   render() {
     return (
-      <form className="add-note-form" onSubmit={(e) => this.handleFormSubmit(e)}>
-        <label htmlFor="name">Name</label>
-        <input type="text" name="name"/>
+      <form className="add-note-form" onSubmit={e => this.handleFormSubmit(e)}>
+        <label htmlFor="name">
+          Name
+          {}
+        </label>
+        <input
+          type="text"
+          name="name"
+          onChange={e =>
+            this.context.updateNewNoteData(e.target.name, e.target.value)
+          }
+        />
         <label htmlFor="desc">Description</label>
-        <input type="text" name="desc" />
+        <input
+          type="text"
+          name="desc"
+          onChange={e =>
+            this.context.updateNewNoteData(e.target.name, e.target.value)
+          }
+        />
         <label htmlFor="folders">Select a Folder</label>
-        <select name="folders">{this.parseFolders()}</select>
+        <select
+          name="folders"
+          onChange={e =>
+            this.context.updateNewNoteData(e.target.name, e.target.value)
+          }
+        >
+          {this.parseFolders()}
+        </select>
         <button type="submit">Submit</button>
       </form>
     )
