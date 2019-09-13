@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ApiContext from '../ApiContext';
 import './AddFolder.css'
+import PropTypes from 'prop-types'
 
 export default class AddFolder extends Component {
   static contextType = ApiContext;
@@ -56,4 +57,8 @@ export default class AddFolder extends Component {
       </form>
     )
   }
+}
+
+AddFolder.propTypes = {
+  history: PropTypes.object
 }
