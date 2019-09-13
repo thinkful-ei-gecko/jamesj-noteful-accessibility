@@ -39,8 +39,14 @@ export default class AddNote extends React.Component {
   }
 
   validateName = () => {
-    if(this.context.newNote.name === 0) {
-      console.log('nope son ya dun gooft')
+    if (this.context.newNote.name.value.length === 0) {
+      return 'Name is required'
+    }
+  }
+
+  validateDescription = () => {
+    if (this.context.newNote.content.value.length === 0) {
+      return 'Description is required'
     }
   }
 
@@ -49,7 +55,7 @@ export default class AddNote extends React.Component {
       <form className="add-note-form" onSubmit={e => this.handleFormSubmit(e)}>
         <label htmlFor="name">
           Name
-          {}
+          {this.context.newNote.name.touched && <p>{this.validateName()}</p>}
         </label>
         <input
           type="text"
@@ -58,23 +64,19 @@ export default class AddNote extends React.Component {
             this.context.updateNewNoteData(e.target.name, e.target.value)
           }
         />
-        <label htmlFor="desc">Description</label>
+        <label htmlFor="content">
+          Description
+          {this.context.newNote.content.touched && <p>{this.validateDescription()}</p>}
+        </label>
         <input
           type="text"
-          name="desc"
+          name="content"
           onChange={e =>
             this.context.updateNewNoteData(e.target.name, e.target.value)
           }
         />
         <label htmlFor="folders">Select a Folder</label>
-        <select
-          name="folders"
-          onChange={e =>
-            this.context.updateNewNoteData(e.target.name, e.target.value)
-          }
-        >
-          {this.parseFolders()}
-        </select>
+        <select name="folders">{this.parseFolders()}</select>
         <button type="submit">Submit</button>
       </form>
     )
