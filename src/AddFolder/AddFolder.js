@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ApiContext from '../ApiContext';
+import './AddFolder.css'
 
 export default class AddFolder extends Component {
   static contextType = ApiContext;
@@ -39,7 +40,7 @@ export default class AddFolder extends Component {
 
   render() {
     return(
-      <form onSubmit={e => this.handleSubmit(e)}>
+      <form className="add-folder-form" onSubmit={e => this.handleSubmit(e)}>
         <label htmlFor="newFolder">
           New Folder
         {this.context.newFolder.touched && (
