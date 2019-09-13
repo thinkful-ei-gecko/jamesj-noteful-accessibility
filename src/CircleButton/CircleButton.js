@@ -20,7 +20,10 @@ NavCircleButton.defaultProps ={
 }
 
 NavCircleButton.propTypes = {
-  tag: PropTypes.string || PropTypes.func,
+  tag: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.func
+  ]),
   otherProps: PropTypes.object,
   className: PropTypes.string,
   children: PropTypes.array
