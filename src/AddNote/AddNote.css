@@ -1,0 +1,14 @@
+.add-note-form {
+  background-color: white;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 300px;
+  height: 150px;
+}
+
+.add-note-form p {
+  color: red;
+  font-size: .75em;
+}
