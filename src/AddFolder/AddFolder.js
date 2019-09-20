@@ -41,9 +41,13 @@ export default class AddFolder extends Component {
 
   render() {
     return(
-      <form className="add-folder-form" onSubmit={e => this.handleSubmit(e)}>
+      <>
+        <header>
+          <h2 className='add-folder-header'>Add A New Folder</h2>
+        </header>
+        <form className="add-folder-form" onSubmit={e => this.handleSubmit(e)}>
         <label htmlFor="newFolder">
-          New Folder
+          Name:
         {this.context.newFolder.touched && (
           <p>{this.validateFolderName()}</p>
           )}  
@@ -52,9 +56,12 @@ export default class AddFolder extends Component {
         type="text"
         name="newFolder"
         id="newFolder"
+        aria-required="true"
+        aria-label="Name"
         onChange={(e) => this.updateFolderName(e)}/>
         <button type="submit">Submit</button>
       </form>
+      </>
     )
   }
 }
