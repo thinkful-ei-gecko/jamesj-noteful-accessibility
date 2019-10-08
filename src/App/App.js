@@ -20,27 +20,29 @@ class App extends Component {
       hasError: false,
       touched: false,
       name: '',
+      id: null
     },
     newNote: {
       name: {
         touched: false,
         value: '',
       },
-      folderId: {
+      folder_id: {
         touched: false,
         value: '',
       },
-      content: {
+      description: {
         touched: false,
         value: '',
       },
+      id: null
     },
   }
 
   componentDidMount() {
     Promise.all([
-      fetch(`${config.API_ENDPOINT}/notes`),
-      fetch(`${config.API_ENDPOINT}/folders`),
+      fetch(`${config.API_ENDPOINT}/api/note`),
+      fetch(`${config.API_ENDPOINT}/api/folder`),
     ])
       .then(([notesRes, foldersRes]) => {
         if (!notesRes.ok) return notesRes.json().then(e => Promise.reject(e))
@@ -90,19 +92,19 @@ class App extends Component {
       notes: [...this.state.notes, note],
     })
   }
-  handleDeleteNote = noteId => {
+  handleDeleteNote = note_id => {
     this.setState({
-      notes: this.state.notes.filter(note => note.id !== noteId),
+      notes: this.state.notes.filter(note => note.id !== note_id),
     })
   }
 
   renderNavRoutes() {
     return (
       <>
-        <Route path="/note/:noteId" component={NotePageNav} />
+        <Route path="/note/:note_id" component={NotePageNav} />
         <Route path="/add-folder" component={NotePageNav} />
         <Route path="/add-note" component={NotePageNav} />
-        {['/', '/folder/:folderId'].map(path => (
+        {['/', '/folder/:folder_id'].map(path => (
           <Route exact key={path} path={path} component={NoteListNav} />
         ))}
       </>
@@ -112,10 +114,10 @@ class App extends Component {
   renderMainRoutes() {
     return (
       <>
-        <Route path="/note/:noteId" component={NotePageMain} />
+        <Route path="/note/:note_id" component={NotePageMain} />
         <Route path="/add-folder" component={AddFolder} />
         <Route path="/add-note" component={AddNote} />
-        {['/', '/folder/:folderId'].map(path => (
+        {['/', '/folder/:folder_id'].map(path => (
           <Route exact key={path} path={path} component={NoteListMain} />
         ))}
       </>

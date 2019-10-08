@@ -14,12 +14,12 @@ describe(`NotePageNav component`, () => {
     const props = {
       match: {
         params: {
-          noteId: 'test-note-id'
+          note_id: 'test-note-id'
         }
       }
     }
     const context = {
-      notes: [{ id: 'test-note-id', folderId: 'test-folder-id' }],
+      notes: [{ id: 'test-note-id', folder_id: 'test-folder-id' }],
       folders: [{ id: 'test-folder-id', name: 'Important' }]
     }
 

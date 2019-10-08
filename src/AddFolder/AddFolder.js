@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import ApiContext from '../ApiContext';
-import './AddFolder.css'
-import PropTypes from 'prop-types'
+import './AddFolder.css';
+import PropTypes from 'prop-types';
+import config from '../config';
 
 export default class AddFolder extends Component {
   static contextType = ApiContext;
 
   addFolder = (name) => {
-    fetch(`http://localhost:9090/folders/`, {
+    let folderID;
+    fetch(`${config.API_ENDPOINT}/api/folder`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -15,8 +17,12 @@ export default class AddFolder extends Component {
         body: JSON.stringify({name})
       }
     )
+    .then(resp => {
+      folderID = parseInt(resp.headers.get('Location').replace(/[^0-9]/g,''))
+      return resp
+    })
     .then(resp => resp.json())
-    .then(data => this.context.addFolder(data))
+    .then(data => this.context.addFolder({id: folderID, ...data}))
   }
 
   handleSubmit(event) {

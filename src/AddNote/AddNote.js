@@ -1,12 +1,13 @@
 import React from 'react'
 import ApiContext from '../ApiContext'
 import './AddNote.css'
+import config from '../config';
 
 export default class AddNote extends React.Component {
   static contextType = ApiContext
   addNewNote = note => {
-    console.log(note)
-    fetch('http://localhost:9090/notes', {
+    let noteID;
+    fetch(`${config.API_ENDPOINT}/api/note`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -14,12 +15,13 @@ export default class AddNote extends React.Component {
       body: JSON.stringify(note),
     })
       .then(res => {
-        console.log(JSON.stringify(note))
+        noteID = parseInt(res.headers.get('Location').replace(/[^0-9]/g,''))
         return res.json()
       })
-      .then(resJSON => this.context.handleAddNote(resJSON))
+      .then(resJSON => this.context.handleAddNote({id: noteID, ...resJSON}))
   }
   parseFolders = () => {
+
     return this.context.folders.map(folder => (
       <option key={folder.id} name={folder.id} value={folder.id}>
         {folder.name}
@@ -31,8 +33,8 @@ export default class AddNote extends React.Component {
     e.preventDefault(e)
     const newNote = {
       name: e.target.name.value,
-      content: e.target.content.value,
-      folderId: e.target.folders.value,
+      description: e.target.description.value,
+      folder_id: e.target.folders.value,
       modified: new Date(),
     }
     this.addNewNote(newNote)
@@ -46,7 +48,7 @@ export default class AddNote extends React.Component {
   }
 
   validateDescription = () => {
-    if (this.context.newNote.content.value.length === 0) {
+    if (this.context.newNote.description.value.length === 0) {
       return 'Description is required'
     }
   }
@@ -75,16 +77,16 @@ export default class AddNote extends React.Component {
               this.context.updateNewNoteData(e.target.name, e.target.value)
             }
           />
-          <label htmlFor="content">
+          <label htmlFor="description">
             Description
-            {this.context.newNote.content.touched && (
+            {this.context.newNote.description.touched && (
               <p>{this.validateDescription()}</p>
             )}
           </label>
           <input
             type="text"
-            name="content"
-            id="content"
+            name="description"
+            id="description"
             aria-required="true"
             aria-label="Description"
             onChange={e =>
