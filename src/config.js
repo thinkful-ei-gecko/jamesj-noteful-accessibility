@@ -3,7 +3,7 @@ const URL =
     ? 'https://noteful-server-jamesj.herokuapp.com'
     : 'http://localhost:8022'
 
-console.log(URL)
+console.log(process.env.NODE_ENV)
 export default {
   API_ENDPOINT: URL,
 }
