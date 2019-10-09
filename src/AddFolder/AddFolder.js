@@ -62,10 +62,11 @@ export default class AddFolder extends Component {
         type="text"
         name="newFolder"
         id="newFolder"
+        required
         aria-required="true"
         aria-label="Name"
         onChange={(e) => this.updateFolderName(e)}/>
-        <button type="submit">Submit</button>
+        <button type="submit" disabled={this.context.newFolder.name.trim().length <= 3}>Submit</button>
       </form>
       </>
     )

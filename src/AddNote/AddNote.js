@@ -1,12 +1,12 @@
 import React from 'react'
 import ApiContext from '../ApiContext'
 import './AddNote.css'
-import config from '../config';
+import config from '../config'
 
 export default class AddNote extends React.Component {
   static contextType = ApiContext
   addNewNote = note => {
-    let noteID;
+    let noteID
     fetch(`${config.API_ENDPOINT}/api/note`, {
       method: 'POST',
       headers: {
@@ -15,13 +15,12 @@ export default class AddNote extends React.Component {
       body: JSON.stringify(note),
     })
       .then(res => {
-        noteID = parseInt(res.headers.get('Location').replace(/[^0-9]/g,''))
+        noteID = parseInt(res.headers.get('Location').replace(/[^0-9]/g, ''))
         return res.json()
       })
-      .then(resJSON => this.context.handleAddNote({id: noteID, ...resJSON}))
+      .then(resJSON => this.context.handleAddNote({ id: noteID, ...resJSON }))
   }
   parseFolders = () => {
-
     return this.context.folders.map(folder => (
       <option key={folder.id} name={folder.id} value={folder.id}>
         {folder.name}
@@ -38,7 +37,7 @@ export default class AddNote extends React.Component {
       modified: new Date(),
     }
     this.addNewNote(newNote)
-    this.props.history.push('/');
+    this.props.history.push('/')
   }
 
   validateName = () => {
@@ -102,7 +101,15 @@ export default class AddNote extends React.Component {
           >
             {this.parseFolders()}
           </select>
-          <button type="submit">Submit</button>
+          <button
+            type="submit"
+            disabled={
+              this.context.newNote.name.value.length === 0 ||
+              this.context.newNote.description.value.length === 0
+            }
+          >
+            Submit
+          </button>
         </form>
       </>
     )
